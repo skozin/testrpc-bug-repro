@@ -8,12 +8,6 @@ contract('Test contract', function(accounts) {
 
   console.log('\naccounts:', accounts)
 
-  const data = [
-    '0x8badf00d8badf00d8badf00d8badf00d8badf00d8badf00d8badf00d8badf00d',
-    '0xaaaabbaaaabbaaaabbaaaabbaaaabbaaaabbaaaabbaaaabbaaaabbaaaabbaaaa',
-    '0x1230001230001230001230001230001230001230001230001230001230001230',
-  ]
-
   let contract
 
   before(async () => {
@@ -22,17 +16,23 @@ contract('Test contract', function(accounts) {
 
   it(`1`, async () => {
     console.info(`\nCalling from ${accounts[1]}\n`)
-    await assertTxSucceeds(contract.test(data[0], {from: accounts[1]}))
+    await assertTxSucceeds(contract.test(1, {from: accounts[1]}))
   })
 
   it(`2`, async () => {
     console.info(`\nCalling from ${accounts[2]}\n`)
-    await assertTxSucceeds(contract.test(data[1], {from: accounts[2]}))
+    await assertTxSucceeds(contract.test(2, {from: accounts[2]}))
   })
 
   it(`3`, async () => {
     console.info(`\nCalling from ${accounts[3]}\n`)
-    await assertTxSucceeds(contract.test(data[0], {from: accounts[3]}))
+    // change the first arg to 3 and it starts working as intended
+    await assertTxSucceeds(contract.test(1, {from: accounts[3]}))
+  })
+
+  it(`check`, async () => {
+    const count = await contract.count()
+    console.info(`count:`, count.toNumber())
   })
 
 })
